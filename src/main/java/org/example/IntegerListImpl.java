@@ -49,7 +49,7 @@ public class IntegerListImpl implements IntegerList {
         return counter;
     }
 
-    public void toMoreVolumeArrayList(){
+    public void grow(){
         ArrayList<Integer> secondList = new ArrayList<>(integerList.size() * 3 / 2 + 1);
         for (Integer i : integerList) {
             secondList.add(i);
@@ -62,7 +62,7 @@ public class IntegerListImpl implements IntegerList {
         if (checkIntegerNotNull(item) && checkIntegerAlreadyExist(item)) {
             counter();
             if (counter == integerList.size()) {
-                toMoreVolumeArrayList();
+                grow();
             }
             integerList.add(item);
         }
@@ -75,7 +75,7 @@ public class IntegerListImpl implements IntegerList {
             if (checkIndexNoLessNullOrMoreThanSizeOfList(index)) {
                 counter();
                 if (counter == integerList.size()) {
-                    toMoreVolumeArrayList();
+                    grow();
                     }
                 integerList.add(index, i);
             }
@@ -90,7 +90,7 @@ public class IntegerListImpl implements IntegerList {
                 counter();
                 try {
                     if (counter == integerList.size()) {
-                        toMoreVolumeArrayList();
+                        grow();
                         integerList.set(index, i);
                     }
                 }
@@ -194,7 +194,7 @@ public class IntegerListImpl implements IntegerList {
         arr[indexB] = tmp;
     }
 
-    private static void sortSelection(Integer[] arr) {      // самый быстрый пособ сортировки - 5627 ms
+/*    private static Integer[] sortSelection(Integer[] arr) {      // самый быстрый способ сортировки - 5627 ms
         for (int i = 0; i < arr.length - 1; i++) {
             int minElementIndex = i;
             for (int j = i + 1; j < arr.length; j++) {
@@ -204,7 +204,34 @@ public class IntegerListImpl implements IntegerList {
             }
             swap(arr, i, minElementIndex);
         }
+        return arr;
+    }*/
+
+
+    public static void quickSort(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
+        }
     }
+
+    private static int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, end);
+        return i + 1;
+    }
+
+
 
     private static boolean contains(Integer[] arr, int element) {
         int min = 0;
@@ -229,6 +256,7 @@ public class IntegerListImpl implements IntegerList {
 
     public static void main(String[] args) {
         createArrayRandomInteger();
+        quickSort(random,0,99999);
         System.out.println(contains(random, 190885029));
     }
 }
